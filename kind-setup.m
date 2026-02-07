@@ -1,40 +1,52 @@
-<!-- Step : Install Docker -->
-sudo apt-get install docker.io
+<!-- 🐳 Step-1: Install Docker -->
+$ sudo apt update
+$ sudo apt install docker.io -y
+$ sudo systemctl start docker
+$ sudo systemctl enable docker
+$ sudo usermod -aG docker $USER
+$ newgrp docker
 
-<!-- step-2: Install kubectl -->
-curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/kubectl
-chmod +x ./kubectl
-sudo mv ./kubectl /usr/local/bin
-kubectl version --short --client
 
-<!-- Step-3 : Install kind -->
-curl -Lo ./kind https://kind.sigs.k8s.io/dl/latest/kind-linux-amd64
-chmod +x ./kind
-sudo mv ./kind /usr/local/bin/
-kind --version
+<!-- ☸️ Step-2: Install kubectl (Stable & Updated)-->
+$ curl -LO https://dl.k8s.io/release/v1.29.4/bin/linux/amd64/kubectl
+$ chmod +x kubectl
+$ sudo mv kubectl /usr/local/bin/
+$ kubectl version --client
 
-<!-- Step-4 : Setup yaml for Multi node cluster -->
 
+<!--🧩 Step-3: Install KIND -->
+$ curl -Lo kind https://kind.sigs.k8s.io/dl/latest/kind-linux-amd64
+$ chmod +x kind
+$ sudo mv kind /usr/local/bin/
+$ kind --version
+
+##Skip for Beginner##
+<!-- Step-4: Create KIND config (Multi-Node)  --> 
 $ vi kind-config.yaml
-# Multi-node KIND cluster
+
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
   - role: control-plane
-    extraPortMappings:
-      - containerPort: 80
-        hostPort: 80
-        protocol: TCP
-      - containerPort: 443
-        hostPort: 443
-        protocol: TCP
   - role: worker
   - role: worker
 
-% Step 5: Create Cluster
-kind create cluster --name mycluster --config kind-config.yaml
+$ kind create cluster \
+  --name mycluster \
+  --image kindest/node:v1.29.4 \
+  --config kind-config.yaml
 
-% Step 6: Verify Cluster
+
+ 
+<-- Step-5: Create KIND Cluster (Stable Kubernetes) -->
+$ kind create cluster \
+  --name mycluster \
+  --image kindest/node:v1.29.4 \
+  --config kind-config.yaml
+
+
+
+<-- Step 6: Verify Cluster -->
 kubectl get nodes
 kubectl cluster-info
 kubectl get pods -A
