@@ -51,6 +51,17 @@ kubectl get nodes
 kubectl cluster-info
 kubectl get pods -A
 
+<-- Step 7: additional fixes --> note required
+
+sudo ls -l /root/.kube/config
+
+mkdir -p $HOME/.kube
+sudo cp /root/.kube/config $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+
+
 
 
 
