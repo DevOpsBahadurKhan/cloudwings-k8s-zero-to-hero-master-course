@@ -63,5 +63,25 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 
 
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    extraPortMappings:
+      - containerPort: 30070
+        hostPort: 30070
+        protocol: TCP
+      - containerPort: 30080
+        hostPort: 30080
+        protocol: TCP
+      - containerPort: 80
+        hostPort: 80
+        protocol: TCP
+      - containerPort: 443
+        hostPort: 443
+        protocol: TCP
+  - role: worker
+  - role: worker
+
 
 
